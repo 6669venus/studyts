@@ -1,12 +1,16 @@
 { 
     "compilerOptions": { 
-        "module": "none", 
-        "target": "es5", 
+        "module": "none",
+        "target": "es5",
         "noImplicitAny": false, 
-        "sourceMap": true, 
-        "outFile": "js/goblinrun.js" 
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "outFile": "js/app.js" 
     }, 
     "exclude": [ 
         "node_modules" 
     ] 
-} 
+}

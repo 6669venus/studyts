@@ -1,4 +1,4 @@
-namespace GoblinRun {
+namespace AppTS {
 
     const enum eGenerateState { PROCESS_PIECE, GENERATE_PIECE }
 

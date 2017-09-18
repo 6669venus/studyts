@@ -1,4 +1,4 @@
-﻿namespace GoblinRun {
+namespace AppTS {
 
     export class Preload extends Phaser.State {
 

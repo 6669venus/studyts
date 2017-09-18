@@ -1,4 +1,4 @@
-namespace GoblinRun {
+namespace AppTS {
 
     export class Play extends Phaser.State {
 

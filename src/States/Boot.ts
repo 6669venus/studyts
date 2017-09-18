@@ -1,4 +1,4 @@
-﻿namespace GoblinRun {
+namespace AppTS {
 
     export class Boot extends Phaser.State {
  
