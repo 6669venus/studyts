@@ -481,6 +481,32 @@ var Helper;
 })(Helper || (Helper = {}));
 var AppTS;
 (function (AppTS) {
+    var Control = (function () {
+        function Control() {
+        }
+        Control.UP = Phaser.Keyboard.UP;
+        Control.DOWN = Phaser.Keyboard.DOWN;
+        Control.LEFT = Phaser.Keyboard.LEFT;
+        Control.RIGHT = Phaser.Keyboard.RIGHT;
+        return Control;
+    }());
+    AppTS.Control = Control;
+})(AppTS || (AppTS = {}));
+var AppTS;
+(function (AppTS) {
+    var Screen = (function () {
+        function Screen() {
+        }
+        Screen.world_height = 1080;
+        Screen.world_width = 1920;
+        Screen.cam_height = 1080;
+        Screen.cam_width = 1920;
+        return Screen;
+    }());
+    AppTS.Screen = Screen;
+})(AppTS || (AppTS = {}));
+var AppTS;
+(function (AppTS) {
     var Boot = (function (_super) {
         __extends(Boot, _super);
         function Boot() {
@@ -498,20 +524,33 @@ var AppTS;
     var Play = (function (_super) {
         __extends(Play, _super);
         function Play() {
-            return _super !== null && _super.apply(this, arguments) || this;
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.goRight = true;
+            return _this;
         }
         Play.prototype.render = function () {
-            this._mainLayer.render();
+            this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00");
+            this.game.debug.inputInfo(10, 28, "#00ff00");
+            this.game.debug.cameraInfo(this.game.camera, 10, 110);
         };
         Play.prototype.create = function () {
             this.stage.backgroundColor = 0xC0C0C0;
             this.camera.bounds = null;
-            Generator.JumpTables.instance;
-            this._mainLayer = new AppTS.MainLayer(this.game, this.world);
+            this.world.setBounds(0, 0, 1920, 1200);
+            this.game.add.sprite(200, 200, "Block");
+            this.cursors = this.game.input.keyboard.createCursorKeys();
         };
         Play.prototype.update = function () {
-            this.camera.x += this.time.physicsElapsed * Generator.Parameters.VELOCITY_X / 2;
-            this._mainLayer.generate(this.camera.x / Generator.Parameters.CELL_SIZE);
+            if (this.cursors.left.isDown) {
+                this.camera.x -= 3;
+            }
+            else if (this.cursors.right.isDown) {
+                this.camera.x += 3;
+            }
+            if (this.cursors.up.isDown) {
+            }
+            else if (this.cursors.down.isDown) {
+            }
         };
         return Play;
     }(Phaser.State));
@@ -527,6 +566,7 @@ var AppTS;
             return _this;
         }
         Preload.prototype.preload = function () {
+            this.game.time.advancedTiming = true;
             this.load.image("Block", "assets/Block.png");
         };
         Preload.prototype.create = function () {

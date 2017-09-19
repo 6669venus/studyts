@@ -7,6 +7,7 @@ namespace AppTS {
 
         // -------------------------------------------------------------------------
         public preload() {
+            this.game.time.advancedTiming = true;
             this.load.image("Block", "assets/Block.png");
         }
 
