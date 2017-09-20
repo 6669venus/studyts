@@ -1,17 +1,3 @@
-var AppTS;
-(function (AppTS) {
-    var Global = (function () {
-        function Global() {
-        }
-        Global.GAME_WIDTH = 1024;
-        Global.GAME_HEIGHT = 640;
-        return Global;
-    }());
-    AppTS.Global = Global;
-})(AppTS || (AppTS = {}));
-window.onload = function () {
-    AppTS.Global.game = new AppTS.Game();
-};
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -24,20 +10,24 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var AppTS;
 (function (AppTS) {
-    var Game = (function (_super) {
-        __extends(Game, _super);
-        function Game() {
-            var _this = _super.call(this, AppTS.Global.GAME_WIDTH, AppTS.Global.GAME_HEIGHT, Phaser.AUTO, "content") || this;
+    var App = (function (_super) {
+        __extends(App, _super);
+        function App() {
+            var _this = _super.call(this, AppTS.Screen.cam_width, AppTS.Screen.cam_height, Phaser.AUTO, "app") || this;
             _this.state.add("Boot", AppTS.Boot);
             _this.state.add("Preload", AppTS.Preload);
             _this.state.add("Play", AppTS.Play);
             _this.state.start("Boot");
             return _this;
         }
-        return Game;
+        App.debug = false;
+        return App;
     }(Phaser.Game));
-    AppTS.Game = Game;
+    AppTS.App = App;
 })(AppTS || (AppTS = {}));
+window.onload = function () {
+    AppTS.App.core = new AppTS.App();
+};
 var AppTS;
 (function (AppTS) {
     var MainLayer = (function (_super) {
@@ -497,10 +487,10 @@ var AppTS;
     var Screen = (function () {
         function Screen() {
         }
-        Screen.world_height = 1080;
-        Screen.world_width = 1920;
-        Screen.cam_height = 1080;
-        Screen.cam_width = 1920;
+        Screen.world_width = 1600;
+        Screen.world_height = 900;
+        Screen.cam_width = 1200;
+        Screen.cam_height = 600;
         return Screen;
     }());
     AppTS.Screen = Screen;
@@ -529,27 +519,30 @@ var AppTS;
             return _this;
         }
         Play.prototype.render = function () {
-            this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00");
-            this.game.debug.inputInfo(10, 28, "#00ff00");
-            this.game.debug.cameraInfo(this.game.camera, 10, 110);
+            if (AppTS.App.debug) {
+                this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00");
+                this.game.debug.inputInfo(10, 28, "#00ff00");
+                this.game.debug.cameraInfo(this.game.camera, 10, 110);
+            }
         };
         Play.prototype.create = function () {
             this.stage.backgroundColor = 0xC0C0C0;
-            this.camera.bounds = null;
-            this.world.setBounds(0, 0, 1920, 1200);
+            this.world.setBounds(0, 0, AppTS.Screen.world_width, AppTS.Screen.world_height);
+            this.game.add.sprite(0, -100, 'backdrop');
             this.game.add.sprite(200, 200, "Block");
-            this.cursors = this.game.input.keyboard.createCursorKeys();
+            this.KeyUP = this.game.input.keyboard.addKey(AppTS.Control.UP);
+            this.KeyDOWN = this.game.input.keyboard.addKey(AppTS.Control.DOWN);
+            this.KeyLEFT = this.game.input.keyboard.addKey(AppTS.Control.LEFT);
+            this.KeyRIGHT = this.game.input.keyboard.addKey(AppTS.Control.RIGHT);
         };
         Play.prototype.update = function () {
-            if (this.cursors.left.isDown) {
+            if (this.KeyLEFT.isDown) {
                 this.camera.x -= 3;
+                this.world.rotation -= .0001;
             }
-            else if (this.cursors.right.isDown) {
+            else if (this.KeyRIGHT.isDown) {
                 this.camera.x += 3;
-            }
-            if (this.cursors.up.isDown) {
-            }
-            else if (this.cursors.down.isDown) {
+                this.world.rotation += .0001;
             }
         };
         return Play;
@@ -568,6 +561,7 @@ var AppTS;
         Preload.prototype.preload = function () {
             this.game.time.advancedTiming = true;
             this.load.image("Block", "assets/Block.png");
+            this.load.image('backdrop', 'assets/limbo1.jpg');
         };
         Preload.prototype.create = function () {
         };

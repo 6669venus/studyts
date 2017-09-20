@@ -4,23 +4,27 @@ namespace AppTS {
 
         private _mainLayer: MainLayer;
         private goRight = true;
-        private cursors;
-        // -------------------------------------------------------------------------
+        private KeyUP: Phaser.Key;
+        private KeyDOWN: Phaser.Key;
+        private KeyLEFT: Phaser.Key;
+        private KeyRIGHT: Phaser.Key;
+        
         public render() {
-            
-            this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00"); 
-            this.game.debug.inputInfo(10, 28, "#00ff00");
-            this.game.debug.cameraInfo(this.game.camera, 10, 110);
-            //this.game.debug.spriteCoords(card, 32, 32);
-            //this._mainLayer.render();
+            if (AppTS.App.debug) {
+                this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00"); 
+                this.game.debug.inputInfo(10, 28, "#00ff00");
+                this.game.debug.cameraInfo(this.game.camera, 10, 110);
+                //this.game.debug.spriteCoords(card, 32, 32);
+                //this._mainLayer.render();
+            }
         }
 
-        // -------------------------------------------------------------------------
         public create() {
             this.stage.backgroundColor = 0xC0C0C0;
 
-            this.camera.bounds = null;
-            this.world.setBounds(0, 0, 1920, 1200);
+            //this.camera.bounds = null;
+            this.world.setBounds(0, 0, Screen.world_width, Screen.world_height);
+            this.game.add.sprite(0, -100, 'backdrop');
             // //Generator.JumpTables.setDebug(true, GoblinRun.Global);
             // Generator.JumpTables.instance;
 
@@ -29,28 +33,25 @@ namespace AppTS {
             // this._mainLayer = new MainLayer(this.game, this.world);
             this.game.add.sprite(200, 200, "Block");
             
-            this.cursors = this.game.input.keyboard.createCursorKeys();
+            this.KeyUP = this.game.input.keyboard.addKey(Control.UP);
+            this.KeyDOWN = this.game.input.keyboard.addKey(Control.DOWN);
+            this.KeyLEFT = this.game.input.keyboard.addKey(Control.LEFT);
+            this.KeyRIGHT = this.game.input.keyboard.addKey(Control.RIGHT);
+            
+            
         }
 
-        // -------------------------------------------------------------------------
         public update() {
-            if (this.cursors.left.isDown)
+            if (this.KeyLEFT.isDown)
             {
                 this.camera.x -= 3;
+                this.world.rotation -= .0001;
             }
-            else if (this.cursors.right.isDown)
+            else if (this.KeyRIGHT.isDown)
             {
                 this.camera.x += 3;
+                this.world.rotation += .0001;
             }
-
-    if (this.cursors.up.isDown)
-    {
-
-    }
-    else if (this.cursors.down.isDown)
-    {
-
-    }
     
             // if (this.camera.x >= 900) { this.goRight = false; } else if (this.camera.x <= 0) {this.goRight = true;}
             // if (this.goRight) {this.camera.x += this.time.physicsElapsed * 100;} else {this.camera.x -= this.time.physicsElapsed * 100;}
