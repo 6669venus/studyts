@@ -1,4 +1,4 @@
-namespace AppTS {
+namespace Venus {
 
     export class Camera {
         //Will be replace with values from server

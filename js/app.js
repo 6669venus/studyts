@@ -8,25 +8,36 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var AppTS;
-(function (AppTS) {
-    var App = (function (_super) {
-        __extends(App, _super);
-        function App() {
-            var _this = _super.call(this, AppTS.Screen.cam_width, AppTS.Screen.cam_height, Phaser.AUTO, "app") || this;
-            _this.state.add("Boot", AppTS.Boot);
-            _this.state.add("Preload", AppTS.Preload);
-            _this.state.add("Play", AppTS.Play);
+var Venus;
+(function (Venus) {
+    var Ref = (function () {
+        function Ref() {
+        }
+        Ref.debug = true;
+        return Ref;
+    }());
+    Venus.Ref = Ref;
+    var G = (function (_super) {
+        __extends(G, _super);
+        function G() {
+            var _this = _super.call(this, Venus.Screen.cam_width, Venus.Screen.cam_height, Phaser.AUTO, "app") || this;
+            _this.currotation = 0.0;
+            _this.state.add("Boot", Venus.Boot);
+            _this.state.add("Preload", Venus.Preload);
+            _this.state.add("Play", Venus.Play);
             _this.state.start("Boot");
             return _this;
         }
-        App.debug = false;
-        return App;
+        G.prototype.movement = function () {
+            this.currotation += .0001;
+            this.world.rotation = this.currotation;
+        };
+        return G;
     }(Phaser.Game));
-    AppTS.App = App;
-})(AppTS || (AppTS = {}));
+    Venus.G = G;
+})(Venus || (Venus = {}));
 window.onload = function () {
-    AppTS.App.core = new AppTS.App();
+    Venus.Ref.g = new Venus.G();
 };
 var AppTS;
 (function (AppTS) {
@@ -469,21 +480,34 @@ var Helper;
     }());
     Helper.Pool = Pool;
 })(Helper || (Helper = {}));
-var AppTS;
-(function (AppTS) {
-    var Control = (function () {
-        function Control() {
+var Venus;
+(function (Venus) {
+    var Camera = (function () {
+        function Camera() {
         }
-        Control.UP = Phaser.Keyboard.UP;
-        Control.DOWN = Phaser.Keyboard.DOWN;
-        Control.LEFT = Phaser.Keyboard.LEFT;
-        Control.RIGHT = Phaser.Keyboard.RIGHT;
-        return Control;
+        Camera.world_width = 1600;
+        Camera.world_height = 900;
+        Camera.cam_width = 1200;
+        Camera.cam_height = 600;
+        return Camera;
     }());
-    AppTS.Control = Control;
-})(AppTS || (AppTS = {}));
-var AppTS;
-(function (AppTS) {
+    Venus.Camera = Camera;
+})(Venus || (Venus = {}));
+var Venus;
+(function (Venus) {
+    var Input = (function () {
+        function Input() {
+        }
+        Input.UP = Phaser.Keyboard.UP;
+        Input.DOWN = Phaser.Keyboard.DOWN;
+        Input.LEFT = Phaser.Keyboard.LEFT;
+        Input.RIGHT = Phaser.Keyboard.RIGHT;
+        return Input;
+    }());
+    Venus.Input = Input;
+})(Venus || (Venus = {}));
+var Venus;
+(function (Venus) {
     var Screen = (function () {
         function Screen() {
         }
@@ -493,10 +517,10 @@ var AppTS;
         Screen.cam_height = 600;
         return Screen;
     }());
-    AppTS.Screen = Screen;
-})(AppTS || (AppTS = {}));
-var AppTS;
-(function (AppTS) {
+    Venus.Screen = Screen;
+})(Venus || (Venus = {}));
+var Venus;
+(function (Venus) {
     var Boot = (function (_super) {
         __extends(Boot, _super);
         function Boot() {
@@ -507,10 +531,10 @@ var AppTS;
         };
         return Boot;
     }(Phaser.State));
-    AppTS.Boot = Boot;
-})(AppTS || (AppTS = {}));
-var AppTS;
-(function (AppTS) {
+    Venus.Boot = Boot;
+})(Venus || (Venus = {}));
+var Venus;
+(function (Venus) {
     var Play = (function (_super) {
         __extends(Play, _super);
         function Play() {
@@ -519,7 +543,7 @@ var AppTS;
             return _this;
         }
         Play.prototype.render = function () {
-            if (AppTS.App.debug) {
+            if (Venus.Ref.debug) {
                 this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00");
                 this.game.debug.inputInfo(10, 28, "#00ff00");
                 this.game.debug.cameraInfo(this.game.camera, 10, 110);
@@ -527,13 +551,13 @@ var AppTS;
         };
         Play.prototype.create = function () {
             this.stage.backgroundColor = 0xC0C0C0;
-            this.world.setBounds(0, 0, AppTS.Screen.world_width, AppTS.Screen.world_height);
+            this.world.setBounds(0, 0, Venus.Screen.world_width, Venus.Screen.world_height);
             this.game.add.sprite(0, -100, 'backdrop');
             this.game.add.sprite(200, 200, "Block");
-            this.KeyUP = this.game.input.keyboard.addKey(AppTS.Control.UP);
-            this.KeyDOWN = this.game.input.keyboard.addKey(AppTS.Control.DOWN);
-            this.KeyLEFT = this.game.input.keyboard.addKey(AppTS.Control.LEFT);
-            this.KeyRIGHT = this.game.input.keyboard.addKey(AppTS.Control.RIGHT);
+            this.KeyUP = this.game.input.keyboard.addKey(Venus.Input.UP);
+            this.KeyDOWN = this.game.input.keyboard.addKey(Venus.Input.DOWN);
+            this.KeyLEFT = this.game.input.keyboard.addKey(Venus.Input.LEFT);
+            this.KeyRIGHT = this.game.input.keyboard.addKey(Venus.Input.RIGHT);
         };
         Play.prototype.update = function () {
             if (this.KeyLEFT.isDown) {
@@ -544,13 +568,14 @@ var AppTS;
                 this.camera.x += 3;
                 this.world.rotation += .0001;
             }
+            Venus.Ref.g.movement();
         };
         return Play;
     }(Phaser.State));
-    AppTS.Play = Play;
-})(AppTS || (AppTS = {}));
-var AppTS;
-(function (AppTS) {
+    Venus.Play = Play;
+})(Venus || (Venus = {}));
+var Venus;
+(function (Venus) {
     var Preload = (function (_super) {
         __extends(Preload, _super);
         function Preload() {
@@ -573,6 +598,6 @@ var AppTS;
         };
         return Preload;
     }(Phaser.State));
-    AppTS.Preload = Preload;
-})(AppTS || (AppTS = {}));
+    Venus.Preload = Preload;
+})(Venus || (Venus = {}));
 //# sourceMappingURL=app.js.map

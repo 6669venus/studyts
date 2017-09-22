@@ -1,6 +1,6 @@
-namespace AppTS {
+namespace Venus {
 
-    export class Control {
+    export class Input {
         //Will be replace with values from server
         
         //Not all keyboard layout group wasd like US-EN

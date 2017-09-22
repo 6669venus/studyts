@@ -1,8 +1,8 @@
-namespace AppTS {
+namespace Venus {
 
     export class Play extends Phaser.State {
 
-        private _mainLayer: MainLayer;
+        //private _mainLayer: MainLayer;
         private goRight = true;
         private KeyUP: Phaser.Key;
         private KeyDOWN: Phaser.Key;
@@ -10,7 +10,7 @@ namespace AppTS {
         private KeyRIGHT: Phaser.Key;
         
         public render() {
-            if (AppTS.App.debug) {
+            if (Venus.Ref.debug) {
                 this.game.debug.text((this.game.time.fps || '--').toString(), 10, 14, "#00ff00"); 
                 this.game.debug.inputInfo(10, 28, "#00ff00");
                 this.game.debug.cameraInfo(this.game.camera, 10, 110);
@@ -33,10 +33,10 @@ namespace AppTS {
             // this._mainLayer = new MainLayer(this.game, this.world);
             this.game.add.sprite(200, 200, "Block");
             
-            this.KeyUP = this.game.input.keyboard.addKey(Control.UP);
-            this.KeyDOWN = this.game.input.keyboard.addKey(Control.DOWN);
-            this.KeyLEFT = this.game.input.keyboard.addKey(Control.LEFT);
-            this.KeyRIGHT = this.game.input.keyboard.addKey(Control.RIGHT);
+            this.KeyUP = this.game.input.keyboard.addKey(Input.UP);
+            this.KeyDOWN = this.game.input.keyboard.addKey(Input.DOWN);
+            this.KeyLEFT = this.game.input.keyboard.addKey(Input.LEFT);
+            this.KeyRIGHT = this.game.input.keyboard.addKey(Input.RIGHT);
             
             
         }
@@ -52,7 +52,7 @@ namespace AppTS {
                 this.camera.x += 3;
                 this.world.rotation += .0001;
             }
-    
+            Venus.Ref.g.movement();
             // if (this.camera.x >= 900) { this.goRight = false; } else if (this.camera.x <= 0) {this.goRight = true;}
             // if (this.goRight) {this.camera.x += this.time.physicsElapsed * 100;} else {this.camera.x -= this.time.physicsElapsed * 100;}
             //this._mainLayer.generate(this.camera.x / Generator.Parameters.CELL_SIZE);
